@@ -1,0 +1,27 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:7252"
+  },
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/receiver",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 8080
+        }
+      ],
+      "Key": "ReceiveEndpoint"
+    },
+    {
+      "DownstreamPathTemplate": "/api/receiver/status/{requestId}",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 8080
+        }
+      ],
+      "Key": "ReceiveStatusEndpoint"
+    }
+  ]
+}

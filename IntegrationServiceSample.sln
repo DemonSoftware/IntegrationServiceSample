@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReceiverService", "ReceiverService\ReceiverService.csproj", "{892D1D9B-6BA5-4466-9DDC-65336B4241EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayApi", "GatewayApi\GatewayApi.csproj", "{7FAAAB5A-D777-45C8-80DF-8B53B302BD17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessingService", "ProcessingService\ProcessingService.csproj", "{4D3811D8-9C3D-46CF-850E-A9732E98562B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{892D1D9B-6BA5-4466-9DDC-65336B4241EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{892D1D9B-6BA5-4466-9DDC-65336B4241EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{892D1D9B-6BA5-4466-9DDC-65336B4241EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{892D1D9B-6BA5-4466-9DDC-65336B4241EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FAAAB5A-D777-45C8-80DF-8B53B302BD17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FAAAB5A-D777-45C8-80DF-8B53B302BD17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FAAAB5A-D777-45C8-80DF-8B53B302BD17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FAAAB5A-D777-45C8-80DF-8B53B302BD17}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D3811D8-9C3D-46CF-850E-A9732E98562B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D3811D8-9C3D-46CF-850E-A9732E98562B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D3811D8-9C3D-46CF-850E-A9732E98562B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D3811D8-9C3D-46CF-850E-A9732E98562B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

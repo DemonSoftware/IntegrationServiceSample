@@ -1,0 +1,96 @@
+services:
+  # Gateway API
+  gateway-api:
+    build:
+      context: .
+      dockerfile: /GatewayApi/Dockerfile
+    container_name: gateway-api
+    ports:
+      - "443:443"
+      - "80:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80;https://+:443
+      - ClientApi__ClientId=your-client-id
+      - ClientApi__ClientSecret=your-client-secret
+    volumes:
+      - ./Certificates:/app/Certificates:ro
+    networks:
+      - pekao-network
+    depends_on:
+      - receiver-service
+
+  # MongoDB for storing incoming JSON requests
+  mongodb-receiverService:
+    image: mongo:latest
+    container_name: ReceiverServiceDb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_receiver_data:/data/db
+    networks:
+      - pekao-network
+
+  # MongoDB for storing produced messages in ReceiverService to RabbitMQ
+  mongodb-receiverMessages:
+    image: mongo:latest
+    container_name: receiverMessages
+    restart: always
+    environment:
+      MONGO_INITDB_DATABASE: MessagesRMQ
+    ports:
+    - "27018:27017"  # Different external port to avoid conflicts
+    volumes:
+    - mongodb_messages_data:/data/db
+    - mongodb_messages_config:/data/configdb
+    networks:
+    - pekao-network
+
+  # RabbitMQ cluster (single node for now, can be expanded to a proper cluster later)
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: rabbitmq_pekao
+    ports:
+      - "5672:5672"   # AMQP port
+      - "15672:15672" # Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=TgB123qwe!
+    networks:
+      - pekao-network
+
+  # Receiver Service
+  receiver-service:
+    build:
+      context: .
+      dockerfile: /ReceiverService/Dockerfile
+    container_name: receiver-service
+    ports:
+      - "8080:80"
+      - "8443:443"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:80
+      - MongoDbSettings__ConnectionString=mongodb://ReceiverServiceDb:27017
+      - MongoDbSettings__DatabaseName=ReceiverServiceDb
+      - MongoDbSettings__RequestCollectionName=JsonRequests
+      - RabbitMqSettings__ConnectionString=amqp://user:TgB123qwe!@rabbitmq_pekao:5672/
+      - RabbitMqSettings__ProcessingQueueName=processing-queue
+      - RabbitMqSettings__ExchangeName=
+      - RabbitMqSettings__RoutingKey=processing-queue
+      - RabbitMqSettings__RetryCount=3
+      - RabbitMqSettings__RetryIntervalSeconds=5
+    networks:
+      - pekao-network
+
+networks:
+  pekao-network:
+    driver: bridge
+
+volumes:
+  mongodb_receiver_data:
+  rabbitmq_data:
+  mongodb_messages_data:
+  mongodb_messages_config:

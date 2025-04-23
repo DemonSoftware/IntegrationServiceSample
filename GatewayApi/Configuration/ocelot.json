@@ -1,0 +1,52 @@
+{
+  "GlobalConfiguration": {
+    "BaseUrl": "https://gateway.yourdomain.com",
+    "RequestIdKey": "OcRequestId"
+  },
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/receiver",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "receiver-service",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/receive",
+      "UpstreamHttpMethod": [ "POST" ],
+      "Key": "ReceiveEndpoint"
+    },
+    {
+      "DownstreamPathTemplate": "/api/receiver/status/{requestId}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "receiver-service",
+          "Port": 80
+        }
+      ],
+      "UpstreamPathTemplate": "/api/receive/status/{requestId}",
+      "UpstreamHttpMethod": [ "GET" ],
+      "Key": "ReceiveStatusEndpoint"
+    },
+    {
+      "DownstreamPathTemplate": "/client-api/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "api.client.com",
+          "Port": 443
+        }
+      ],
+      "UpstreamPathTemplate": "/api/client/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ],
+      "DelegatingHandlers": [ "ClientApiDelegatingHandler" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "ClientJwtSchema",
+        "AllowedScopes": []
+      },
+      "Key": "ClientApiProxy"
+    }
+  ]
+}
